@@ -15,6 +15,7 @@ describe('Technologys', () => {
 	  it('it should GET all the technologys', (done) => {
 			chai.request(server)
 		    .get('/API/TechnologyGetAll')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('array');
@@ -34,6 +35,7 @@ describe('Technologys', () => {
       }
 			chai.request(server)
 		    .post('/API/TechnologyInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(technology)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -54,6 +56,7 @@ describe('Technologys', () => {
       }
 			chai.request(server)
 		    .post('/API/TechnologyInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(technology)
 		    .end((err, res) => {
           localStorage.setItem('TechnologyId', res.body.data[0]._id);
@@ -77,6 +80,7 @@ describe('Technologys', () => {
       }
       chai.request(server)
         .post('/API/TechnologyInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(technology)
         .end((err, res) => {
           res.should.have.status(200);
@@ -100,6 +104,7 @@ describe('Technologys', () => {
 	  	technology.save((err, technology) => {
 	  		chai.request(server)
         .get('/API/TechnologyGetById/' + technology._id)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(technology)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -114,6 +119,7 @@ describe('Technologys', () => {
     it('it should give an error as the TechnologyId is not a valid id', (done) => {
         chai.request(server)
         .get('/API/TechnologyGetById/' + 'abc')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .end((err, res) => {
           res.body.should.be.a('object');
           res.body.should.have.property('errors');
@@ -137,6 +143,7 @@ describe('Technologys', () => {
 	  	 technology.save((err, technology) => {
 				chai.request(server)
 			    .put('/API/TechnologyUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .send({
               _id : technology._id,
               TechnologyName: "Update Test Technology",
@@ -162,6 +169,7 @@ describe('Technologys', () => {
       technology.save((err, technology) => {
         chai.request(server)
           .put('/API/TechnologyUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id : technology._id,
               TechnologyName: '',
@@ -183,6 +191,7 @@ describe('Technologys', () => {
     it('it should not UPDATE an Technology as given id is not a valid TechnologyId', (done) => {
         chai.request(server)
           .put('/API/TechnologyUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
 							_id : mongoose.Types.ObjectId(),
               TechnologyName: "Updated_InvalidId Technology",
@@ -202,6 +211,7 @@ describe('Technologys', () => {
 		it('it should not UPDATE an Technology as given id is not a valid objectId', (done) => {
         chai.request(server)
           .put('/API/TechnologyUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id:'abc',
               TechnologyName: "Updated_InvalidId Technology",
@@ -232,6 +242,7 @@ describe('Technologys', () => {
 	  	technology.save((err, technology) => {
 				chai.request(server)
 			    .delete('/API/TechnologyDelete/' + technology._id)
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .end((err, res) => {
 				  	res.should.have.status(200);
 				  	res.body.should.be.a('object');
@@ -245,6 +256,7 @@ describe('Technologys', () => {
     it('it should not DELETE an Technology by the given id', (done) => {
         chai.request(server)
           .delete('/API/TechnologyDelete/' + mongoose.Types.ObjectId())
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');

@@ -8,12 +8,13 @@ let server = require('../server');
 let should = chai.should();
 let expect = chai.expect();
 chai.use(chaiHttp);
-describe('Projects', () => {
 
+describe('Projects', () => {
   describe('/GET Project', () => {
 	  it('it should GET all the projects', (done) => {
 			chai.request(server)
 		    .get('/API/ProjectGetAll')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('array');
@@ -31,23 +32,16 @@ describe('Projects', () => {
 				TeamSize: 5,
 				Description: 'Project Description',
 				OtherTools: 'OtherTools Project',
-				DatabaseId : [
- 					localStorage.getItem('DatabaseId').toString()
- 			 ],
- 			 Technology : [
- 					localStorage.getItem('TechnologyId').toString()
- 			 ],
- 			 OperatingSystemId : [
- 					localStorage.getItem('OperatingSystemId').toString()
- 			 ],
- 			 DomainId : [
- 					localStorage.getItem('DomainId').toString()
- 			 ],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
 				IsActive: true,
 				IsDelete: false
       }
 			chai.request(server)
 		    .post('/API/ProjectInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(project)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -66,23 +60,16 @@ describe('Projects', () => {
         TeamSize: null,
         Description: 'Project Description',
         OtherTools: 'OtherTools Project',
-				DatabaseId : [
-					localStorage.getItem('DatabaseId').toString()
-			 ],
-			 Technology : [
-					localStorage.getItem('TechnologyId').toString()
-			 ],
-			 OperatingSystemId : [
-					localStorage.getItem('OperatingSystemId').toString()
-			 ],
-			 DomainId : [
-					localStorage.getItem('DomainId').toString()
-			 ],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
         IsActive: true,
         IsDelete: false
       }
       chai.request(server)
         .post('/API/ProjectInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(project)
         .end((err, res) => {
           res.should.have.status(200);
@@ -101,23 +88,16 @@ describe('Projects', () => {
 				TeamSize: undefined,
 				Description: 'Project Description',
 				OtherTools: 'OtherTools Project',
-				DatabaseId : [
- 					localStorage.getItem('DatabaseId').toString()
- 			 ],
- 			 Technology : [
- 					localStorage.getItem('TechnologyId').toString()
- 			 ],
- 			 OperatingSystemId : [
- 					localStorage.getItem('OperatingSystemId').toString()
- 			 ],
- 			 DomainId : [
- 					localStorage.getItem('DomainId').toString()
- 			 ],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
 				IsActive: true,
 				IsDelete: false
 			}
 			chai.request(server)
 				.post('/API/ProjectInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.send(project)
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -134,23 +114,16 @@ describe('Projects', () => {
 				TeamSize: 5,
 				Description: '',
 				OtherTools: 'OtherTools Project',
-				DatabaseId : [
- 					localStorage.getItem('DatabaseId').toString()
- 			 ],
- 			 Technology : [
- 					localStorage.getItem('TechnologyId').toString()
- 			 ],
- 			 OperatingSystemId : [
- 					localStorage.getItem('OperatingSystemId').toString()
- 			 ],
- 			 DomainId : [
- 					localStorage.getItem('DomainId').toString()
- 			 ],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
 				IsActive: true,
 				IsDelete: false
 			}
 			chai.request(server)
 				.post('/API/ProjectInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.send(project)
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -164,28 +137,22 @@ describe('Projects', () => {
 
   // //   //All valid fields are available
 	  it('it should POST a Project ', (done) => {
-	  	let project ={
-			  ProjectName : "Project12",
+	  	let project = new Project({
+			  ProjectName : "Project123",
 		    TeamSize : 5,
 		    Description : "test",
 		    OtherTools : "test",
 		    IsActive : true,
 		    IsDelete : false,
-				DatabaseId : [
- 					localStorage.getItem('DatabaseId').toString()
- 			 ],
- 			 Technology : [
- 					localStorage.getItem('TechnologyId').toString()
- 			 ],
- 			 OperatingSystemId : [
- 					localStorage.getItem('OperatingSystemId').toString()
- 			 ],
- 			 DomainId : [
- 					localStorage.getItem('DomainId').toString()
- 			 ]
-      }
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+      });
+
 			chai.request(server)
 		    .post('/API/ProjectInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(project)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -215,6 +182,7 @@ describe('Projects', () => {
       }
       chai.request(server)
         .post('/API/ProjectInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(project)
         .end((err, res) => {
           res.should.have.status(200);
@@ -228,7 +196,7 @@ describe('Projects', () => {
   });
 
   describe('/GET/:id project', () => {
-  //   //Get an Project by the valid given ProjectId.
+  // //   //Get an Project by the valid given ProjectId.
 	  it('it should GET a project by the given id', (done) => {
 			let project = new Project({
 				  ProjectName : "Project13",
@@ -237,22 +205,15 @@ describe('Projects', () => {
 			    OtherTools : "test",
 			    IsActive : true,
 			    IsDelete : false,
-					DatabaseId : [
-   					localStorage.getItem('DatabaseId').toString()
-   			 ],
-   			 Technology : [
-   					localStorage.getItem('TechnologyId').toString()
-   			 ],
-   			 OperatingSystemId : [
-   					localStorage.getItem('OperatingSystemId').toString()
-   			 ],
-   			 DomainId : [
-   					localStorage.getItem('DomainId').toString()
-   			 ]
+          DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+          TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+          OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+          DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
 		    });
 	  	project.save((err, project) => {
 				chai.request(server)
         .get('/API/ProjectGetById/' + project._id)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(project)
 		    .end((err, res) => {
 			  		res.should.have.status(200);
@@ -262,11 +223,12 @@ describe('Projects', () => {
 		    });
 	  	});
 	  });
-
-  // //   //Get an Project with the invalid ProjectId / A random string
+  //
+  // // //   //Get an Project with the invalid ProjectId / A random string
     it('it should give an error as the ProjectId is not a valid id', (done) => {
         chai.request(server)
         .get('/API/ProjectGetById/' + 'abc')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .end((err, res) => {
 					res.body.should.have.property('status');
 					res.body.should.have.property('status').eql('500');
@@ -277,49 +239,34 @@ describe('Projects', () => {
   });
 
   describe('/PUT/:id Project', () => {
-    // update an Project with a valid ProjectId
+  //   // update an Project with a valid ProjectId
 	  it('it should UPDATE a Project by the given id', (done) => {
 	  	let project = new Project({
 				ProjectName: 'Existing Project',
 				TeamSize: 5,
 				Description: 'Project Description',
 				OtherTools: 'OtherTools Project',
-				DatabaseId : [
- 					localStorage.getItem('DatabaseId').toString()
- 			 ],
- 			 Technology : [
- 					localStorage.getItem('TechnologyId').toString()
- 			 ],
- 			 OperatingSystemId : [
- 					localStorage.getItem('OperatingSystemId').toString()
- 			 ],
- 			 DomainId : [
- 					localStorage.getItem('DomainId').toString()
- 			 ],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
 				IsActive: true,
 				IsDelete: false
       })
 	  	 project.save((err, project) => {
 				chai.request(server)
 			    .put('/API/ProjectUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .send({
               _id : project._id,
 							ProjectName: 'Updated Project',
 							TeamSize: 6,
 							Description: 'Project Description',
 							OtherTools: 'OtherTools Project',
-							DatabaseId : [
-			 					localStorage.getItem('DatabaseId').toString()
-			 			 ],
-			 			 Technology : [
-			 					localStorage.getItem('TechnologyId').toString()
-			 			 ],
-			 			 OperatingSystemId : [
-			 					localStorage.getItem('OperatingSystemId').toString()
-			 			 ],
-			 			 DomainId : [
-			 					localStorage.getItem('DomainId').toString()
-			 			 ],
+              DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+       			  TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+       			  OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+       			  DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
 							IsActive: true,
 							IsDelete: false
           })
@@ -332,49 +279,34 @@ describe('Projects', () => {
 			    });
 		   });
 	  });
-
+  //
     it('it should not UPDATE  an Project without ProjectName field', (done) => {
       let project = new Project({
           ProjectName: 'Project without Name',
       		TeamSize: 5,
       		Description: 'Project Description',
       		OtherTools: 'OtherTools Project',
-					DatabaseId : [
-	 					localStorage.getItem('DatabaseId').toString()
-	 			 ],
-	 			 Technology : [
-	 					localStorage.getItem('TechnologyId').toString()
-	 			 ],
-	 			 OperatingSystemId : [
-	 					localStorage.getItem('OperatingSystemId').toString()
-	 			 ],
-	 			 DomainId : [
-	 					localStorage.getItem('DomainId').toString()
-	 			 ],
+          DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+          TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+          OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+          DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
       		IsActive: true,
       		IsDelete: false
       })
       project.save((err, project) => {
         chai.request(server)
           .put('/API/ProjectUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id : project._id,
               ProjectName: '',
           		TeamSize: 5,
           		Description: 'Project Description',
           		OtherTools: 'OtherTools Project',
-							DatabaseId : [
-			 					localStorage.getItem('DatabaseId').toString()
-			 			 ],
-			 			 Technology : [
-			 					localStorage.getItem('TechnologyId').toString()
-			 			 ],
-			 			 OperatingSystemId : [
-			 					localStorage.getItem('OperatingSystemId').toString()
-			 			 ],
-			 			 DomainId : [
-			 					localStorage.getItem('DomainId').toString()
-			 			 ],
+              DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+       			  TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+       			  OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+       			  DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
           		IsActive: true,
           		IsDelete: false
           })
@@ -396,42 +328,27 @@ describe('Projects', () => {
           TeamSize: 5,
           Description: 'Project Description',
           OtherTools: 'OtherTools Project',
-					DatabaseId : [
-	 					localStorage.getItem('DatabaseId').toString()
-	 			 ],
-	 			 Technology : [
-	 					localStorage.getItem('TechnologyId').toString()
-	 			 ],
-	 			 OperatingSystemId : [
-	 					localStorage.getItem('OperatingSystemId').toString()
-	 			 ],
-	 			 DomainId : [
-	 					localStorage.getItem('DomainId').toString()
-	 			 ],
+          DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+          TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+          OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+          DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
           IsActive: true,
           IsDelete: false
       })
       project.save((err, project) => {
         chai.request(server)
           .put('/API/ProjectUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id : project._id,
               ProjectName: 'Updated Project Without Name',
               TeamSize: null,
               Description: 'Project Description',
               OtherTools: 'OtherTools Project',
-							DatabaseId : [
-			 					localStorage.getItem('DatabaseId').toString()
-			 			 ],
-			 			 Technology : [
-			 					localStorage.getItem('TechnologyId').toString()
-			 			 ],
-			 			 OperatingSystemId : [
-			 					localStorage.getItem('OperatingSystemId').toString()
-			 			 ],
-			 			 DomainId : [
-			 					localStorage.getItem('DomainId').toString()
-			 			 ],
+              DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+       			  TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+       			  OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+       			  DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
               IsActive: true,
               IsDelete: false
           })
@@ -453,42 +370,27 @@ describe('Projects', () => {
           TeamSize: 5,
           Description: 'Project Description',
           OtherTools: 'OtherTools Project',
-					DatabaseId : [
-	 					localStorage.getItem('DatabaseId').toString()
-	 			 ],
-	 			 Technology : [
-	 					localStorage.getItem('TechnologyId').toString()
-	 			 ],
-	 			 OperatingSystemId : [
-	 					localStorage.getItem('OperatingSystemId').toString()
-	 			 ],
-	 			 DomainId : [
-	 					localStorage.getItem('DomainId').toString()
-	 			 ],
+          DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+          TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+          OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+          DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
           IsActive: true,
           IsDelete: false
       })
       project.save((err, project) => {
         chai.request(server)
           .put('/API/ProjectUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id : project._id,
               ProjectName: 'Updated Project Without Name',
               TeamSize: 6,
               Description: null,
               OtherTools: 'OtherTools Project',
-							DatabaseId : [
-			 					localStorage.getItem('DatabaseId').toString()
-			 			 ],
-			 			 Technology : [
-			 					localStorage.getItem('TechnologyId').toString()
-			 			 ],
-			 			 OperatingSystemId : [
-			 					localStorage.getItem('OperatingSystemId').toString()
-			 			 ],
-			 			 DomainId : [
-			 					localStorage.getItem('DomainId').toString()
-			 			 ],
+              DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+              TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+              OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+              DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
               IsActive: true,
               IsDelete: false
           })
@@ -502,50 +404,35 @@ describe('Projects', () => {
           });
       });
     });
-
-  //   //TeamSize has value undefined or when TeamSize field is not passed to the post object
+  //
+  // //   //TeamSize has value undefined or when TeamSize field is not passed to the post object
     it('it should not UPDATE  an Project without TeamSize field (with undefined value)', (done) => {
       let project = new Project({
           ProjectName: 'Project without Name',
           TeamSize: 5,
           Description: 'Project Description',
           OtherTools: 'OtherTools Project',
-					DatabaseId : [
-	 					localStorage.getItem('DatabaseId').toString()
-	 			 ],
-	 			 Technology : [
-	 					localStorage.getItem('TechnologyId').toString()
-	 			 ],
-	 			 OperatingSystemId : [
-	 					localStorage.getItem('OperatingSystemId').toString()
-	 			 ],
-	 			 DomainId : [
-	 					localStorage.getItem('DomainId').toString()
-	 			 ],
+          DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+          TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+          OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+          DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
           IsActive: true,
           IsDelete: false
       })
       project.save((err, project) => {
         chai.request(server)
           .put('/API/ProjectUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id : project._id,
               ProjectName: 'Updated Project Without Name',
               TeamSize: undefined,
               Description: 'Project Description',
               OtherTools: 'OtherTools Project',
-							DatabaseId : [
-			 					localStorage.getItem('DatabaseId').toString()
-			 			 ],
-			 			 Technology : [
-			 					localStorage.getItem('TechnologyId').toString()
-			 			 ],
-			 			 OperatingSystemId : [
-			 					localStorage.getItem('OperatingSystemId').toString()
-			 			 ],
-			 			 DomainId : [
-			 					localStorage.getItem('DomainId').toString()
-			 			 ],
+              DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+       			  TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+       			  OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+       			  DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
               IsActive: true,
               IsDelete: false
           })
@@ -558,29 +445,22 @@ describe('Projects', () => {
           });
       });
     });
-
-  //   // Update an Project with an invalid ProjectId
+  //
+  // //   // Update an Project with an invalid ProjectId
     it('it should not UPDATE an Project as given id is not a valid ProjectId', (done) => {
         chai.request(server)
           .put('/API/ProjectUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
 							_id: mongoose.Types.ObjectId(),
               ProjectName: 'Update Project with Invalid ProjectId',
               TeamSize: 6,
               Description: 'Project Description',
               OtherTools: 'OtherTools Project',
-							DatabaseId : [
-			 					localStorage.getItem('DatabaseId').toString()
-			 			 ],
-			 			 Technology : [
-			 					localStorage.getItem('TechnologyId').toString()
-			 			 ],
-			 			 OperatingSystemId : [
-			 					localStorage.getItem('OperatingSystemId').toString()
-			 			 ],
-			 			 DomainId : [
-			 					localStorage.getItem('DomainId').toString()
-			 			 ],
+              DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+       			  TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+       			  OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+       			  DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
               IsActive: true,
               IsDelete: false
           })
@@ -592,29 +472,22 @@ describe('Projects', () => {
             done();
           });
     });
-
-	// // 	// Update an Project with an invalid ProjectId
+  //
+	// // // 	// Update an Project with an invalid ProjectId
 		it('it should not UPDATE an Project as given id is not a valid objectId', (done) => {
         chai.request(server)
           .put('/API/ProjectUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id:'abc',
               ProjectName: 'Update Project with Invalid ProjectId',
               TeamSize: 6,
               Description: 'Project Description',
               OtherTools: 'OtherTools Project',
-							DatabaseId : [
-			 					localStorage.getItem('DatabaseId').toString()
-			 			 ],
-			 			 Technology : [
-			 					localStorage.getItem('TechnologyId').toString()
-			 			 ],
-			 			 OperatingSystemId : [
-			 					localStorage.getItem('OperatingSystemId').toString()
-			 			 ],
-			 			 DomainId : [
-			 					localStorage.getItem('DomainId').toString()
-			 			 ],
+              DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+       			  TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+       			  OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+       			  DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
               IsActive: true,
               IsDelete: false
           })
@@ -631,31 +504,24 @@ describe('Projects', () => {
    });
 
   describe('/DELETE/:id project', () => {
-// //     //Delete an Project with valid ProjectId
+// // //     //Delete an Project with valid ProjectId
 	  it('it should DELETE an Project by the given id', (done) => {
 	  	let project = new Project({
         ProjectName: 'Delete Project',
         TeamSize: 6,
         Description: 'Project Description',
         OtherTools: 'OtherTools Project',
-				DatabaseId : [
- 					localStorage.getItem('DatabaseId').toString()
- 			 ],
- 			 Technology : [
- 					localStorage.getItem('TechnologyId').toString()
- 			 ],
- 			 OperatingSystemId : [
- 					localStorage.getItem('OperatingSystemId').toString()
- 			 ],
- 			 DomainId : [
- 					localStorage.getItem('DomainId').toString()
- 			 ],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        OperatingSystemId : localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
         IsActive: true,
         IsDelete: false
       })
 	  	project.save((err, project) => {
 				chai.request(server)
 			    .delete('/API/ProjectDelete/' + project._id)
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .end((err, res) => {
 				  	res.should.have.status(200);
 				  	res.body.should.be.a('object');
@@ -669,6 +535,7 @@ describe('Projects', () => {
     it('it should not DELETE an Project by the given id', (done) => {
         chai.request(server)
           .delete('/API/ProjectDelete/' + mongoose.Types.ObjectId())
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');

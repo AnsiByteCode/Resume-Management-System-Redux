@@ -5,6 +5,8 @@ let chaiHttp = require('chai-http');
 let server = require('../server');
 let should = chai.should();
 let expect = chai.expect();
+var LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./localstorage');
 
 chai.use(chaiHttp);
 describe('Users', () => {
@@ -12,6 +14,7 @@ describe('Users', () => {
 	  it('it should GET all the users', (done) => {
 			chai.request(server)
 		    .get('/API/UserGetAll')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('array');
@@ -34,6 +37,7 @@ describe('Users', () => {
       }
 			chai.request(server)
 		    .post('/API/UserInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(user)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -58,6 +62,7 @@ describe('Users', () => {
 			}
 			chai.request(server)
 				.post('/API/UserInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.send(user)
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -82,6 +87,7 @@ describe('Users', () => {
 			}
 			chai.request(server)
 				.post('/API/UserInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.send(user)
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -106,6 +112,7 @@ describe('Users', () => {
 			}
 			chai.request(server)
 				.post('/API/UserInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.send(user)
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -130,6 +137,7 @@ describe('Users', () => {
 			}
 			chai.request(server)
 				.post('/API/UserInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.send(user)
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -154,6 +162,7 @@ describe('Users', () => {
 			}
 			chai.request(server)
 		    .post('/API/UserInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(user)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -184,6 +193,7 @@ describe('Users', () => {
       }
       chai.request(server)
         .post('/API/UserInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(user)
         .end((err, res) => {
           res.should.have.status(200);
@@ -211,6 +221,7 @@ describe('Users', () => {
 	  	user.save((err, user) => {
 	  		chai.request(server)
         .get('/API/UserGetById/' + user._id)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(user)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -225,6 +236,7 @@ describe('Users', () => {
     it('it should give an error as the UserId is not a valid id', (done) => {
         chai.request(server)
         .get('/API/UserGetById/' + 'abc')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .end((err, res) => {
           res.body.should.be.a('object');
           res.body.should.have.property('errors');
@@ -253,6 +265,7 @@ describe('Users', () => {
 	  	 user.save((err, user) => {
 				chai.request(server)
 			    .put('/API/UserUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .send({
               _id : user._id,
 							FirstName: 'Updated User',
@@ -287,6 +300,7 @@ describe('Users', () => {
       user.save((err, user) => {
         chai.request(server)
           .put('/API/UserUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id : user._id,
 							FirstName: '',
@@ -322,6 +336,7 @@ describe('Users', () => {
 			user.save((err, user) => {
 				chai.request(server)
 					.put('/API/UserUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 					.send({
 							_id : user._id,
 							FirstName: 'Updated User',
@@ -357,6 +372,7 @@ describe('Users', () => {
 			user.save((err, user) => {
 				chai.request(server)
 					.put('/API/UserUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 					.send({
 							_id : user._id,
 							FirstName: 'Updated User',
@@ -382,6 +398,7 @@ describe('Users', () => {
     it('it should not UPDATE an User as given id is not a valid UserId', (done) => {
         chai.request(server)
           .put('/API/UserUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
 							_id : mongoose.Types.ObjectId(),
 							FirstName: 'Invalid UserId User',
@@ -405,6 +422,7 @@ describe('Users', () => {
 		it('it should not UPDATE an User as given id is not a valid objectId', (done) => {
         chai.request(server)
           .put('/API/UserUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id:'abc',
 							FirstName: 'Invalid String UserId User',
@@ -442,6 +460,7 @@ describe('Users', () => {
 	  	user.save((err, user) => {
 				chai.request(server)
 			    .delete('/API/UserDelete/' + user._id)
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .end((err, res) => {
 				  	res.should.have.status(200);
 				  	res.body.should.be.a('object');
@@ -455,6 +474,7 @@ describe('Users', () => {
     it('it should not DELETE an User by the given id', (done) => {
         chai.request(server)
           .delete('/API/UserDelete/' + mongoose.Types.ObjectId())
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');

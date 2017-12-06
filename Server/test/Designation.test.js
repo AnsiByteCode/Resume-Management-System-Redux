@@ -15,6 +15,7 @@ describe('Designations', () => {
 	  it('it should GET all the designations', (done) => {
 			chai.request(server)
 		    .get('/API/DesignationGetAll')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('array');
@@ -34,6 +35,7 @@ describe('Designations', () => {
       }
 			chai.request(server)
 		    .post('/API/DesignationInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(designation)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -54,6 +56,7 @@ describe('Designations', () => {
       }
 			chai.request(server)
 		    .post('/API/DesignationInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(designation)
 		    .end((err, res) => {
           localStorage.setItem('DesignationId', res.body.data[0]._id);
@@ -77,6 +80,7 @@ describe('Designations', () => {
       }
       chai.request(server)
         .post('/API/DesignationInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(designation)
         .end((err, res) => {
           res.should.have.status(200);
@@ -100,6 +104,7 @@ describe('Designations', () => {
 	  	designation.save((err, designation) => {
 	  		chai.request(server)
         .get('/API/DesignationGetById/' + designation._id)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(designation)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -114,6 +119,7 @@ describe('Designations', () => {
     it('it should give an error as the DesignationId is not a valid id', (done) => {
         chai.request(server)
         .get('/API/DesignationGetById/' + 'abc')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .end((err, res) => {
           res.body.should.be.a('object');
           res.body.should.have.property('errors');
@@ -137,6 +143,7 @@ describe('Designations', () => {
 	  	 designation.save((err, designation) => {
 				chai.request(server)
 			    .put('/API/DesignationUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .send({
               _id : designation._id,
               DesignationName: "Update Test Designation",
@@ -162,6 +169,7 @@ describe('Designations', () => {
       designation.save((err, designation) => {
         chai.request(server)
           .put('/API/DesignationUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id : designation._id,
               DesignationName: '',
@@ -183,6 +191,7 @@ describe('Designations', () => {
     it('it should not UPDATE an Designation as given id is not a valid DesignationId', (done) => {
         chai.request(server)
           .put('/API/DesignationUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
 							_id: mongoose.Types.ObjectId(),
               DesignationName: "Updated_InvalidId Designation",
@@ -202,6 +211,7 @@ describe('Designations', () => {
 		it('it should not UPDATE an Designation as given id is not a valid objectId', (done) => {
         chai.request(server)
           .put('/API/DesignationUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id:'abc',
               DesignationName: "Updated_InvalidId Designation",
@@ -232,6 +242,7 @@ describe('Designations', () => {
 	  	designation.save((err, designation) => {
 				chai.request(server)
 			    .delete('/API/DesignationDelete/' + designation._id)
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .end((err, res) => {
 				  	res.should.have.status(200);
 				  	res.body.should.be.a('object');
@@ -245,6 +256,7 @@ describe('Designations', () => {
     it('it should not DELETE an Designation by the given id', (done) => {
         chai.request(server)
           .delete('/API/DesignationDelete/' + mongoose.Types.ObjectId())
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');

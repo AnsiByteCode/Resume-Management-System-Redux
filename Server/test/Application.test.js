@@ -7,14 +7,13 @@ let should = chai.should();
 let expect = chai.expect();
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./localstorage');
-
 chai.use(chaiHttp);
 describe('Applications', () => {
-
   describe('/GET Application', () => {
 	  it('it should GET all the applications', (done) => {
 			chai.request(server)
 		    .get('/API/ApplicationGetAll')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('array');
@@ -35,6 +34,7 @@ describe('Applications', () => {
 			chai.request(server)
 		    .post('/API/ApplicationInsert')
 		    .send(application)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('object');
@@ -55,6 +55,7 @@ describe('Applications', () => {
 			chai.request(server)
 		    .post('/API/ApplicationInsert')
 		    .send(application)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
           localStorage.setItem('ApplicationId', res.body.data[0]._id);
 			  	res.should.have.status(200);
@@ -67,8 +68,8 @@ describe('Applications', () => {
 		      done();
 		    });
 	  });
-
-  //   // All fields are not available
+  //
+  // //   // All fields are not available
     it('it should not POST an Application without field values ', (done) => {
       let application = {
            ApplicationName: '',
@@ -78,6 +79,7 @@ describe('Applications', () => {
       chai.request(server)
         .post('/API/ApplicationInsert')
         .send(application)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -101,6 +103,7 @@ describe('Applications', () => {
 	  		chai.request(server)
         .get('/API/ApplicationGetById/' + application._id)
 		    .send(application)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('object');
@@ -114,6 +117,7 @@ describe('Applications', () => {
     it('it should give an error as the ApplicationId is not a valid id', (done) => {
         chai.request(server)
         .get('/API/ApplicationGetById/' + 'abc')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .end((err, res) => {
           res.body.should.be.a('object');
           res.body.should.have.property('errors');
@@ -143,6 +147,7 @@ describe('Applications', () => {
               IsActive: true,
               IsDelete: false
           })
+         .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .end((err, res) => {
 				  	res.should.have.status(200);
 				  	res.body.should.be.a('object');
@@ -152,8 +157,8 @@ describe('Applications', () => {
 			    });
 		   });
 	  });
-
-		// update an Application with a valid ApplicationId but without ApplicationName
+  
+	 	// update an Application with a valid ApplicationId but without ApplicationName
     it('it should not UPDATE  an Application without ApplicationName field', (done) => {
       let application = new Application({
           ApplicationName: "Existing Application",
@@ -169,6 +174,7 @@ describe('Applications', () => {
               IsActive: true,
               IsDelete: false
           })
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
@@ -179,7 +185,7 @@ describe('Applications', () => {
           });
       });
     });
-
+ 
     // Update an Application with an invalid ApplicationId
     it('it should not UPDATE an Application as given id is not a valid ApplicationId', (done) => {
         chai.request(server)
@@ -190,6 +196,7 @@ describe('Applications', () => {
               IsActive: true,
               IsDelete: false
           })
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
@@ -198,8 +205,8 @@ describe('Applications', () => {
             done();
           });
     });
-
-		// Update an Application with an invalid ApplicationId
+ 
+ 	// Update an Application with an invalid ApplicationId
 		it('it should not UPDATE an Application as given id is not a valid objectId', (done) => {
         chai.request(server)
           .put('/API/ApplicationUpdate/')
@@ -209,6 +216,7 @@ describe('Applications', () => {
               IsActive: true,
               IsDelete: false
           })
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
@@ -221,8 +229,7 @@ describe('Applications', () => {
     });
   });
 
-   describe('/DELETE/:id application', () => {
-  //
+  describe('/DELETE/:id application', () => {
   //   //Delete an Application with valid ApplicationId
 	  it('it should DELETE an Application by the given id', (done) => {
 	  	let application = new Application({
@@ -233,6 +240,7 @@ describe('Applications', () => {
 	  	application.save((err, application) => {
 				chai.request(server)
 			    .delete('/API/ApplicationDelete/' + application._id)
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .end((err, res) => {
 				  	res.should.have.status(200);
 				  	res.body.should.be.a('object');
@@ -246,6 +254,7 @@ describe('Applications', () => {
     it('it should not DELETE an Application by the given id', (done) => {
         chai.request(server)
           .delete('/API/ApplicationDelete/' + mongoose.Types.ObjectId())
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');

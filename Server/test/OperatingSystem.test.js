@@ -14,6 +14,7 @@ describe('OperatingSystems', () => {
 	  it('it should GET all the operatingsystems', (done) => {
 			chai.request(server)
 		    .get('/API/OperatingSystemGetAll')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('array');
@@ -33,6 +34,7 @@ describe('OperatingSystems', () => {
       }
 			chai.request(server)
 		    .post('/API/OperatingSystemInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(operatingsystem)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -53,6 +55,7 @@ describe('OperatingSystems', () => {
       }
 			chai.request(server)
 		    .post('/API/OperatingSystemInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(operatingsystem)
 		    .end((err, res) => {
 					localStorage.setItem('OperatingSystemId', res.body.data[0]._id);
@@ -76,6 +79,7 @@ describe('OperatingSystems', () => {
       }
       chai.request(server)
         .post('/API/OperatingSystemInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(operatingsystem)
         .end((err, res) => {
           res.should.have.status(200);
@@ -99,6 +103,7 @@ describe('OperatingSystems', () => {
 	  	operatingsystem.save((err, operatingsystem) => {
 	  		chai.request(server)
         .get('/API/OperatingSystemGetById/' + operatingsystem._id)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(operatingsystem)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -113,6 +118,7 @@ describe('OperatingSystems', () => {
     it('it should give an error as the OperatingSystemId is not a valid id', (done) => {
         chai.request(server)
         .get('/API/OperatingSystemGetById/' + 'abc')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .end((err, res) => {
           res.body.should.be.a('object');
           res.body.should.have.property('errors');
@@ -136,6 +142,7 @@ describe('OperatingSystems', () => {
 	  	 operatingsystem.save((err, operatingsystem) => {
 				chai.request(server)
 			    .put('/API/OperatingSystemUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .send({
               _id : operatingsystem._id,
               OperatingSystemName: "Update Test OperatingSystem",
@@ -161,6 +168,7 @@ describe('OperatingSystems', () => {
       operatingsystem.save((err, operatingsystem) => {
         chai.request(server)
           .put('/API/OperatingSystemUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id : operatingsystem._id,
               OperatingSystemName: '',
@@ -182,6 +190,7 @@ describe('OperatingSystems', () => {
     it('it should not UPDATE an OperatingSystem as given id is not a valid OperatingSystemId', (done) => {
         chai.request(server)
           .put('/API/OperatingSystemUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
 							_id : mongoose.Types.ObjectId(),
               OperatingSystemName: "Updated_InvalidId OperatingSystem",
@@ -201,6 +210,7 @@ describe('OperatingSystems', () => {
 		it('it should not UPDATE an OperatingSystem as given id is not a valid objectId', (done) => {
         chai.request(server)
           .put('/API/OperatingSystemUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id:'abc',
               OperatingSystemName: "Updated_InvalidId OperatingSystem",
@@ -231,6 +241,7 @@ describe('OperatingSystems', () => {
 	  	operatingsystem.save((err, operatingsystem) => {
 				chai.request(server)
 			    .delete('/API/OperatingSystemDelete/' + operatingsystem._id)
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .end((err, res) => {
 				  	res.should.have.status(200);
 				  	res.body.should.be.a('object');
@@ -244,6 +255,7 @@ describe('OperatingSystems', () => {
     it('it should not DELETE an OperatingSystem by the given id', (done) => {
         chai.request(server)
           .delete('/API/OperatingSystemDelete/' + mongoose.Types.ObjectId())
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');

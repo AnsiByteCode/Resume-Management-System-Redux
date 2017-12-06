@@ -16,6 +16,7 @@ describe('Domains', () => {
 	  it('it should GET all the domains', (done) => {
 			chai.request(server)
 		    .get('/API/DomainGetAll')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('array');
@@ -35,6 +36,7 @@ describe('Domains', () => {
       }
 			chai.request(server)
 		    .post('/API/DomainInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(domain)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -55,6 +57,7 @@ describe('Domains', () => {
       }
 			chai.request(server)
 		    .post('/API/DomainInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(domain)
 		    .end((err, res) => {
 					localStorage.setItem('DomainId', res.body.data[0]._id);
@@ -79,6 +82,7 @@ describe('Domains', () => {
       }
       chai.request(server)
         .post('/API/DomainInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(domain)
         .end((err, res) => {
           res.should.have.status(200);
@@ -105,6 +109,7 @@ describe('Domains', () => {
 	  	domain.save((err, domain) => {
 	  		chai.request(server)
         .get('/API/DomainGetById/' + domain._id)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(domain)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -119,6 +124,7 @@ describe('Domains', () => {
     it('it should give an error as the DomainId is not a valid id', (done) => {
         chai.request(server)
         .get('/API/DomainGetById/' + 'abc')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .end((err, res) => {
           res.body.should.be.a('object');
           res.body.should.have.property('errors');
@@ -142,6 +148,7 @@ describe('Domains', () => {
 	  	 domain.save((err, domain) => {
 				chai.request(server)
 			    .put('/API/DomainUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .send({
               _id : domain._id,
               DomainName: "Update Test Domain",
@@ -167,6 +174,7 @@ describe('Domains', () => {
       domain.save((err, domain) => {
         chai.request(server)
           .put('/API/DomainUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id : domain._id,
               DomainName: '',
@@ -188,6 +196,7 @@ describe('Domains', () => {
     it('it should not UPDATE an Domain as given id is not a valid DomainId', (done) => {
         chai.request(server)
           .put('/API/DomainUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
 							_id : mongoose.Types.ObjectId(),
               DomainName: "Updated_InvalidId Domain",
@@ -207,6 +216,7 @@ describe('Domains', () => {
 		it('it should not UPDATE an Domain as given id is not a valid objectId', (done) => {
         chai.request(server)
           .put('/API/DomainUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id:'abc',
               DomainName: "Updated_InvalidId Domain",
@@ -237,6 +247,7 @@ describe('Domains', () => {
 	  	domain.save((err, domain) => {
 				chai.request(server)
 			    .delete('/API/DomainDelete/' + domain._id)
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .end((err, res) => {
 				  	res.should.have.status(200);
 				  	res.body.should.be.a('object');
@@ -250,6 +261,7 @@ describe('Domains', () => {
     it('it should not DELETE an Domain by the given id', (done) => {
         chai.request(server)
           .delete('/API/DomainDelete/' + mongoose.Types.ObjectId())
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');

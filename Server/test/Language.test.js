@@ -15,6 +15,7 @@ describe('Languages', () => {
 	  it('it should GET all the languages', (done) => {
 			chai.request(server)
 		    .get('/API/LanguageGetAll')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('array');
@@ -34,6 +35,7 @@ describe('Languages', () => {
       }
 			chai.request(server)
 		    .post('/API/LanguageInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(language)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -54,6 +56,7 @@ describe('Languages', () => {
       }
 			chai.request(server)
 		    .post('/API/LanguageInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(language)
 		    .end((err, res) => {
 				  localStorage.setItem('LanguageId', res.body.data[0]._id);
@@ -77,6 +80,7 @@ describe('Languages', () => {
       }
       chai.request(server)
         .post('/API/LanguageInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(language)
         .end((err, res) => {
           res.should.have.status(200);
@@ -100,6 +104,7 @@ describe('Languages', () => {
 	  	language.save((err, language) => {
 	  		chai.request(server)
         .get('/API/LanguageGetById/' + language._id)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(language)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -114,6 +119,7 @@ describe('Languages', () => {
     it('it should give an error as the LanguageId is not a valid id', (done) => {
         chai.request(server)
         .get('/API/LanguageGetById/' + 'abc')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .end((err, res) => {
           res.body.should.be.a('object');
           res.body.should.have.property('errors');
@@ -137,6 +143,7 @@ describe('Languages', () => {
 	  	 language.save((err, language) => {
 				chai.request(server)
 			    .put('/API/LanguageUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .send({
               _id : language._id,
               LanguageName: "Update Test Language",
@@ -162,6 +169,7 @@ describe('Languages', () => {
       language.save((err, language) => {
         chai.request(server)
           .put('/API/LanguageUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id : language._id,
               LanguageName: '',
@@ -183,6 +191,7 @@ describe('Languages', () => {
     it('it should not UPDATE an Language as given id is not a valid LanguageId', (done) => {
         chai.request(server)
           .put('/API/LanguageUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
 							_id : mongoose.Types.ObjectId(),
               LanguageName: "Updated_InvalidId Language",
@@ -202,6 +211,7 @@ describe('Languages', () => {
 		it('it should not UPDATE an Language as given id is not a valid objectId', (done) => {
         chai.request(server)
           .put('/API/LanguageUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id:'abc',
               LanguageName: "Updated_InvalidId Language",
@@ -232,6 +242,7 @@ describe('Languages', () => {
 	  	language.save((err, language) => {
 				chai.request(server)
 			    .delete('/API/LanguageDelete/' + language._id)
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .end((err, res) => {
 				  	res.should.have.status(200);
 				  	res.body.should.be.a('object');
@@ -245,6 +256,7 @@ describe('Languages', () => {
     it('it should not DELETE an Language by the given id', (done) => {
         chai.request(server)
           .delete('/API/LanguageDelete/' + mongoose.Types.ObjectId())
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');

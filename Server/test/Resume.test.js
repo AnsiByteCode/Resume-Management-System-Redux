@@ -10,14 +10,6 @@ var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./localstorage');
 
 chai.use(chaiHttp);
- let designationId = localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): null;
- let domainId = localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString() : null;
- let applicationId = localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString() : null;
- let operatingSystemId = localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString() :  null;
- let technologyId = localStorage.getItem('TechnologyId') != null ? localStorage.getItem('OperatingSystemId').toString() : null;
- let frameworkId = localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString() : null;
- let languageId = localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString() : null;
- let databaseId = localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString() : null;
 
 describe('Resumes', () => {
 
@@ -25,11 +17,11 @@ describe('Resumes', () => {
 	  it('it should GET all the resumes', (done) => {
 			chai.request(server)
 		    .get('/API/ResumeGetAll')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('array');
 		      done();
-		    });
 	  });
   });
 
@@ -45,14 +37,14 @@ describe('Resumes', () => {
         ProjectCount : 2,
         KnowledgeDescription : "KnowledgeDescription",
         WorkDescription: "WorkDescription",
-        Domain : [domainId],
-        Application : [applicationId],
-        OperatingSystem : [operatingSystemId],
-        Technology : [technologyId],
-        Framework : [frameworkId],
-        Language : [languageId],
-        Database : [databaseId],
-        DesignationId : [designationId],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+        ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+        OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+        LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
         IsActive : true,
         IsDelete : false
       });
@@ -60,6 +52,7 @@ describe('Resumes', () => {
 	  	candidate.save((err, resume) => {
 	  		chai.request(server)
         .get('/API/ResumeGetById/' + resume._id)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(resume)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -74,6 +67,7 @@ describe('Resumes', () => {
     it('it should give an error as the ResumeId is not a valid id', (done) => {
         chai.request(server)
         .get('/API/ResumeGetById/' + 'abc')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .end((err, res) => {
           res.body.should.be.a('object');
           res.body.should.have.property('errors');
@@ -97,20 +91,21 @@ describe('Resumes', () => {
 				ProjectCount : 2,
 				KnowledgeDescription : "KnowledgeDescription",
 				WorkDescription: "WorkDescription",
-        Domain : [domainId],
-        Application : [applicationId],
-        OperatingSystem : [operatingSystemId],
-        Technology : [technologyId],
-        Framework : [frameworkId],
-        Language : [languageId],
-        Database : [databaseId],
-        DesignationId : [designationId],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+        ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+        OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+        LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 				IsActive : true,
 				IsDelete : false
 			});
 			candidate.save((err, resume) => {
 				chai.request(server)
 				.get('/API/ResumeGetAllDetailsById/' + resume._id)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.send(resume)
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -125,6 +120,7 @@ describe('Resumes', () => {
 		it('it should give an error as the ResumeId is not a valid id for fetching all resume details', (done) => {
 				chai.request(server)
 				.get('/API/ResumeGetAllDetailsById/' + mongoose.Types.ObjectId())
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.end((err, res) => {
 					res.body.should.be.a('object');
 					res.body.should.have.property('errors');
@@ -147,19 +143,20 @@ describe('Resumes', () => {
         ProjectCount : 2,
         KnowledgeDescription : "KnowledgeDescription",
         WorkDescription: "WorkDescription",
-        Domain : [domainId],
-        Application : [applicationId],
-        OperatingSystem : [operatingSystemId],
-        Technology : [technologyId],
-        Framework : [frameworkId],
-        Language : [languageId],
-        Database : [databaseId],
-        DesignationId : [designationId],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+        ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+        OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+        LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
         IsActive : true,
         IsDelete : false
       };
       chai.request(server)
         .post('/API/ResumeInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(candidate)
         .end((err, res) => {
           res.should.have.status(200);
@@ -181,19 +178,20 @@ describe('Resumes', () => {
 				ProjectCount : 2,
 				KnowledgeDescription : "KnowledgeDescription",
 				WorkDescription: "WorkDescription",
-        Domain : [domainId],
-        Application : [applicationId],
-        OperatingSystem : [operatingSystemId],
-        Technology : [technologyId],
-        Framework : [frameworkId],
-        Language : [languageId],
-        Database : [databaseId],
-        DesignationId : [designationId],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+        ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+        OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+        LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 				IsActive : true,
 				IsDelete : false
 			};
 			chai.request(server)
 				.post('/API/ResumeInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.send(candidate)
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -214,19 +212,20 @@ describe('Resumes', () => {
 				ProjectCount : 2,
 				KnowledgeDescription : "KnowledgeDescription",
 				WorkDescription: "WorkDescription",
-        Domain : [domainId],
-        Application : [applicationId],
-        OperatingSystem : [operatingSystemId],
-        Technology : [technologyId],
-        Framework : [frameworkId],
-        Language : [languageId],
-        Database : [databaseId],
-        DesignationId : [designationId],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+        ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+        OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+        LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 				IsActive : true,
 				IsDelete : false
 			};
 			chai.request(server)
 				.post('/API/ResumeInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.send(candidate)
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -247,19 +246,20 @@ describe('Resumes', () => {
 				ProjectCount : 2,
 				KnowledgeDescription : "KnowledgeDescription",
 				WorkDescription: "WorkDescription",
-        Domain : [domainId],
-        Application : [applicationId],
-        OperatingSystem : [operatingSystemId],
-        Technology : [technologyId],
-        Framework : [frameworkId],
-        Language : [languageId],
-        Database : [databaseId],
-        DesignationId : [designationId],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+        ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+        OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+        LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 				IsActive : true,
 				IsDelete : false
 			};
 			chai.request(server)
 				.post('/API/ResumeInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.send(candidate)
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -280,19 +280,20 @@ describe('Resumes', () => {
 				ProjectCount : 2,
 				KnowledgeDescription : "KnowledgeDescription",
 				WorkDescription: "WorkDescription",
-        Domain : [domainId],
-        Application : [applicationId],
-        OperatingSystem : [operatingSystemId],
-        Technology : [technologyId],
-        Framework : [frameworkId],
-        Language : [languageId],
-        Database : [databaseId],
-        DesignationId : [designationId],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+        ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+        OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+        LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 				IsActive : true,
 				IsDelete : false
 			};
 			chai.request(server)
 				.post('/API/ResumeInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.send(candidate)
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -313,19 +314,20 @@ describe('Resumes', () => {
 				ProjectCount : undefined,
 				KnowledgeDescription : "KnowledgeDescription",
 				WorkDescription: "WorkDescription",
-        Domain : [domainId],
-        Application : [applicationId],
-        OperatingSystem : [operatingSystemId],
-        Technology : [technologyId],
-        Framework : [frameworkId],
-        Language : [languageId],
-        Database : [databaseId],
-        DesignationId : [designationId],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+        ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+        OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+        LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 				IsActive : true,
 				IsDelete : false
 			};
 			chai.request(server)
 				.post('/API/ResumeInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.send(candidate)
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -346,19 +348,20 @@ describe('Resumes', () => {
 				ProjectCount : 2,
 				KnowledgeDescription : undefined,
 				WorkDescription: "WorkDescription",
-        Domain : [domainId],
-        Application : [applicationId],
-        OperatingSystem : [operatingSystemId],
-        Technology : [technologyId],
-        Framework : [frameworkId],
-        Language : [languageId],
-        Database : [databaseId],
-        DesignationId : [designationId],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+        ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+        OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+        LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 				IsActive : true,
 				IsDelete : false
 			};
 			chai.request(server)
 				.post('/API/ResumeInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.send(candidate)
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -379,19 +382,20 @@ describe('Resumes', () => {
 				ProjectCount : 2,
 				KnowledgeDescription : "KnowledgeDescription",
 				WorkDescription: undefined,
-        Domain : [domainId],
-        Application : [applicationId],
-        OperatingSystem : [operatingSystemId],
-        Technology : [technologyId],
-        Framework : [frameworkId],
-        Language : [languageId],
-        Database : [databaseId],
-        DesignationId : [designationId],
+        DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+        ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+        OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+        TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+        FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+        LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+        DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+        DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 				IsActive : true,
 				IsDelete : false
 			};
 			chai.request(server)
 				.post('/API/ResumeInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				.send(candidate)
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -414,20 +418,21 @@ describe('Resumes', () => {
           ProjectCount : 2,
           KnowledgeDescription : "KnowledgeDescription",
           WorkDescription: "WorkDescription",
-          Domain : [domainId],
-          Application : [applicationId],
-          OperatingSystem : [operatingSystemId],
-          Technology : [technologyId],
-          Framework : [frameworkId],
-          Language : [languageId],
-          Database : [databaseId],
-          DesignationId : [designationId],
+          Domain : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+          Application :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+          OperatingSystem :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+          Technology : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+          Framework : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+          Language : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+          Database : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+          DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
           IsActive : true,
           IsDelete : false,
 					Projects : []
         };
       chai.request(server)
         .post('/API/ResumeInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(candidate)
         .end((err, res) => {
           res.should.have.status(200);
@@ -465,6 +470,7 @@ describe('Resumes', () => {
       }
       chai.request(server)
         .post('/API/ResumeInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(candidate)
         .end((err, res) => {
           res.should.have.status(200);
@@ -489,14 +495,14 @@ describe('Resumes', () => {
 						ProjectCount : 2,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
       })
@@ -504,6 +510,7 @@ describe('Resumes', () => {
 	  	 candidate.save((err, resume) => {
 				chai.request(server)
 			    .put('/API/ResumeUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .send({
              CandidateId : resume._id,
 							CandidateName: "Jayshree Pathak",
@@ -514,14 +521,14 @@ describe('Resumes', () => {
 							ProjectCount : 5,
 							KnowledgeDescription : "KnowledgeDescription",
 							WorkDescription: "WorkDescription",
-              Domain : [domainId],
-              Application : [applicationId],
-              OperatingSystem : [operatingSystemId],
-              Technology : [technologyId],
-              Framework : [frameworkId],
-              Language : [languageId],
-              Database : [databaseId],
-              DesignationId : [designationId],
+              DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+              ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+              OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+              TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+              FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+              LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+              DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+              DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 							IsActive : true,
 							IsDelete : false
           })
@@ -545,20 +552,21 @@ describe('Resumes', () => {
 						ProjectCount : 2,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
       })
       candidate.save((err, resume) => {
         chai.request(server)
           .put('/API/ResumeUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
 						CandidateId : resume._id,
 						CandidateName: undefined,
@@ -569,14 +577,14 @@ describe('Resumes', () => {
 						ProjectCount : 5,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
           })
@@ -601,20 +609,21 @@ describe('Resumes', () => {
 						ProjectCount : 2,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 			})
 			candidate.save((err, resume) => {
 				chai.request(server)
 					.put('/API/ResumeUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 					.send({
 						CandidateId : resume._id,
 						CandidateName: "Aditya Pancholi",
@@ -625,14 +634,14 @@ describe('Resumes', () => {
 						ProjectCount : 5,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 					})
@@ -656,20 +665,21 @@ describe('Resumes', () => {
 						ProjectCount : 2,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 			})
 			candidate.save((err, resume) => {
 				chai.request(server)
 					.put('/API/ResumeUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 					.send({
 						CandidateId : resume._id,
 						CandidateName: "Arena Panchal",
@@ -680,14 +690,14 @@ describe('Resumes', () => {
 						ProjectCount : 5,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 					})
@@ -711,20 +721,21 @@ describe('Resumes', () => {
 						ProjectCount : 2,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 			})
 			candidate.save((err, resume) => {
 				chai.request(server)
 					.put('/API/ResumeUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 					.send({
 						CandidateId : resume._id,
 						CandidateName: "Jay Gohil",
@@ -735,14 +746,14 @@ describe('Resumes', () => {
 						ProjectCount : 5,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 					})
@@ -766,20 +777,21 @@ describe('Resumes', () => {
 						ProjectCount : 2,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 			})
 			candidate.save((err, resume) => {
 				chai.request(server)
 					.put('/API/ResumeUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 					.send({
 						CandidateId : resume._id,
 						CandidateName: "Jay Gohil",
@@ -790,14 +802,14 @@ describe('Resumes', () => {
 						ProjectCount : 5,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 					})
@@ -821,20 +833,21 @@ describe('Resumes', () => {
 						ProjectCount : 2,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 			})
 			candidate.save((err, resume) => {
 				chai.request(server)
 					.put('/API/ResumeUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 					.send({
 						CandidateId : resume._id,
 						CandidateName: "Jay Gohil",
@@ -845,14 +858,14 @@ describe('Resumes', () => {
 						ProjectCount : 5,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 					})
@@ -876,20 +889,21 @@ describe('Resumes', () => {
 						ProjectCount : 2,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 			})
 			candidate.save((err, resume) => {
 				chai.request(server)
 					.put('/API/ResumeUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 					.send({
 						CandidateId : resume._id,
 						CandidateName: "Jay Gohil",
@@ -900,14 +914,14 @@ describe('Resumes', () => {
 						ProjectCount : null,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 					})
@@ -931,20 +945,21 @@ describe('Resumes', () => {
 						ProjectCount : 2,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 			})
 			candidate.save((err, resume) => {
 				chai.request(server)
 					.put('/API/ResumeUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 					.send({
 						CandidateId : resume._id,
 						CandidateName: "Jay Gohil",
@@ -955,14 +970,14 @@ describe('Resumes', () => {
 						ProjectCount : 2,
 						KnowledgeDescription : undefined,
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 					})
@@ -986,20 +1001,21 @@ describe('Resumes', () => {
 						ProjectCount : 2,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 			})
 			candidate.save((err, resume) => {
 				chai.request(server)
 					.put('/API/ResumeUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 					.send({
 						CandidateId : resume._id,
 						CandidateName: "Jay Gohil",
@@ -1010,14 +1026,14 @@ describe('Resumes', () => {
 						ProjectCount : 2,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: undefined,
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
 					})
@@ -1035,6 +1051,7 @@ describe('Resumes', () => {
     it('it should not UPDATE Resume Details as given id is not a valid CandidateId', (done) => {
         chai.request(server)
           .put('/API/ResumeUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
 							CandidateId : mongoose.Types.ObjectId(),
 							CandidateName: "Hinal Gohil",
@@ -1045,14 +1062,14 @@ describe('Resumes', () => {
 							ProjectCount : 2,
 							KnowledgeDescription : "KnowledgeDescription",
 							WorkDescription: "WorkDescription",
-              Domain : [domainId],
-              Application : [applicationId],
-              OperatingSystem : [operatingSystemId],
-              Technology : [technologyId],
-              Framework : [frameworkId],
-              Language : [languageId],
-              Database : [databaseId],
-              DesignationId : [designationId],
+              DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+              ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+              OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+              TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+              FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+              LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+              DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+              DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 							IsActive : true,
 							IsDelete : false
           })
@@ -1068,6 +1085,7 @@ describe('Resumes', () => {
 		it('it should not UPDATE an Resume as given id is not a valid objectId', (done) => {
         chai.request(server)
           .put('/API/ResumeUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
 						CandidateId : 'abc',
 						CandidateName: "Hinal Gohil",
@@ -1078,14 +1096,14 @@ describe('Resumes', () => {
 						ProjectCount : 2,
 						KnowledgeDescription : "KnowledgeDescription",
 						WorkDescription: "WorkDescription",
-            Domain : [domainId],
-            Application : [applicationId],
-            OperatingSystem : [operatingSystemId],
-            Technology : [technologyId],
-            Framework : [frameworkId],
-            Language : [languageId],
-            Database : [databaseId],
-            DesignationId : [designationId],
+            DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+            ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+            OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+            TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+            FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+            LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+            DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+            DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 						IsActive : true,
 						IsDelete : false
           })
@@ -1115,20 +1133,21 @@ describe('Resumes', () => {
 			ProjectCount : 2,
 			KnowledgeDescription : "KnowledgeDescription",
 			WorkDescription: "WorkDescription",
-      Domain : [domainId],
-      Application : [applicationId],
-      OperatingSystem : [operatingSystemId],
-      Technology : [technologyId],
-      Framework : [frameworkId],
-      Language : [languageId],
-      Database : [databaseId],
-      DesignationId : [designationId],
+      DomainId : localStorage.getItem('DomainId') != null ? localStorage.getItem('DomainId').toString(): [],
+      ApplicationId :localStorage.getItem('ApplicationId') != null ? localStorage.getItem('ApplicationId').toString(): [],
+      OperatingSystemId :localStorage.getItem('OperatingSystemId') != null ? localStorage.getItem('OperatingSystemId').toString(): [],
+      TechnologyId : localStorage.getItem('TechnologyId') != null ? localStorage.getItem('TechnologyId').toString(): [],
+      FrameworkId : localStorage.getItem('FrameworkId') != null ? localStorage.getItem('FrameworkId').toString(): [],
+      LanguageId : localStorage.getItem('LanguageId') != null ? localStorage.getItem('LanguageId').toString(): [],
+      DatabaseId : localStorage.getItem('DatabaseId') != null ? localStorage.getItem('DatabaseId').toString(): [],
+      DesignationId : localStorage.getItem('DesignationId') != null ? localStorage.getItem('DesignationId').toString(): [],
 			IsActive : true,
 			IsDelete : false
 		 })
 		 candidate.save((err, resume) => {
 			 chai.request(server)
 				 .delete('/API/ResumeDelete/' + resume._id)
+         .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				 .end((err, res) => {
 					 res.should.have.status(200);
 					 res.body.should.be.a('object');
@@ -1142,6 +1161,7 @@ describe('Resumes', () => {
 	 it('it should not DELETE an Resume by the given id', (done) => {
 			 chai.request(server)
 				 .delete('/API/ResumeDelete/' + mongoose.Types.ObjectId())
+         .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 				 .end((err, res) => {
 					 res.should.have.status(200);
 					 res.body.should.be.a('object');
@@ -1153,3 +1173,4 @@ describe('Resumes', () => {
 				 });
 	 });
  });
+});

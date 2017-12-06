@@ -15,6 +15,7 @@ describe('Databases', () => {
 	  it('it should GET all the databases', (done) => {
 			chai.request(server)
 		    .get('/API/DatabaseGetAll')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('array');
@@ -34,6 +35,7 @@ describe('Databases', () => {
       }
 			chai.request(server)
 		    .post('/API/DatabaseInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(database)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -54,6 +56,7 @@ describe('Databases', () => {
       }
 			chai.request(server)
 		    .post('/API/DatabaseInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(database)
 		    .end((err, res) => {
           localStorage.setItem('DatabaseId', res.body.data[0]._id);
@@ -77,6 +80,7 @@ describe('Databases', () => {
       }
       chai.request(server)
         .post('/API/DatabaseInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(database)
         .end((err, res) => {
           res.should.have.status(200);
@@ -100,6 +104,7 @@ describe('Databases', () => {
 	  	database.save((err, database) => {
 	  		chai.request(server)
         .get('/API/DatabaseGetById/' + database._id)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(database)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -114,6 +119,7 @@ describe('Databases', () => {
     it('it should give an error as the DatabaseId is not a valid id', (done) => {
         chai.request(server)
         .get('/API/DatabaseGetById/' + 'abc')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .end((err, res) => {
           res.body.should.be.a('object');
           res.body.should.have.property('errors');
@@ -137,12 +143,14 @@ describe('Databases', () => {
 	  	 database.save((err, database) => {
 				chai.request(server)
 			    .put('/API/DatabaseUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .send({
               _id : database._id,
               DatabaseName: "Update Test Database",
               IsActive: true,
               IsDelete: false
           })
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .end((err, res) => {
 				  	res.should.have.status(200);
 				  	res.body.should.be.a('object');
@@ -162,6 +170,7 @@ describe('Databases', () => {
       database.save((err, database) => {
         chai.request(server)
           .put('/API/DatabaseUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id : database._id,
               DatabaseName: '',
@@ -183,6 +192,7 @@ describe('Databases', () => {
     it('it should not UPDATE an Database as given id is not a valid DatabaseId', (done) => {
         chai.request(server)
           .put('/API/DatabaseUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
 							_id : mongoose.Types.ObjectId(),
               DatabaseName: "Updated_InvalidId Database",
@@ -202,6 +212,7 @@ describe('Databases', () => {
 		it('it should not UPDATE an Database as given id is not a valid objectId', (done) => {
         chai.request(server)
           .put('/API/DatabaseUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id:'abc',
               DatabaseName: "Updated_InvalidId Database",
@@ -232,6 +243,7 @@ describe('Databases', () => {
 	  	database.save((err, database) => {
 				chai.request(server)
 			    .delete('/API/DatabaseDelete/' + database._id)
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .end((err, res) => {
 				  	res.should.have.status(200);
 				  	res.body.should.be.a('object');
@@ -245,6 +257,7 @@ describe('Databases', () => {
     it('it should not DELETE an Database by the given id', (done) => {
         chai.request(server)
           .delete('/API/DatabaseDelete/' + mongoose.Types.ObjectId())
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');

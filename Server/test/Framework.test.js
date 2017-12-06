@@ -15,6 +15,7 @@ describe('Frameworks', () => {
 	  it('it should GET all the frameworks', (done) => {
 			chai.request(server)
 		    .get('/API/FrameworkGetAll')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('array');
@@ -34,6 +35,7 @@ describe('Frameworks', () => {
       }
 			chai.request(server)
 		    .post('/API/FrameworkInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(framework)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -54,6 +56,7 @@ describe('Frameworks', () => {
       }
 			chai.request(server)
 		    .post('/API/FrameworkInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(framework)
 		    .end((err, res) => {
 				  localStorage.setItem('FrameworkId', res.body.data[0]._id);
@@ -77,6 +80,7 @@ describe('Frameworks', () => {
       }
       chai.request(server)
         .post('/API/FrameworkInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(framework)
         .end((err, res) => {
           res.should.have.status(200);
@@ -100,6 +104,7 @@ describe('Frameworks', () => {
 	  	framework.save((err, framework) => {
 	  		chai.request(server)
         .get('/API/FrameworkGetById/' + framework._id)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(framework)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -114,6 +119,7 @@ describe('Frameworks', () => {
     it('it should give an error as the FrameworkId is not a valid id', (done) => {
         chai.request(server)
         .get('/API/FrameworkGetById/' + 'abc')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .end((err, res) => {
           res.body.should.be.a('object');
           res.body.should.have.property('errors');
@@ -137,6 +143,7 @@ describe('Frameworks', () => {
 	  	 framework.save((err, framework) => {
 				chai.request(server)
 			    .put('/API/FrameworkUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .send({
               _id : framework._id,
               FrameworkName: "Update Test Framework",
@@ -162,6 +169,7 @@ describe('Frameworks', () => {
       framework.save((err, framework) => {
         chai.request(server)
           .put('/API/FrameworkUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id : framework._id,
               FrameworkName: '',
@@ -183,6 +191,7 @@ describe('Frameworks', () => {
     it('it should not UPDATE an Framework as given id is not a valid FrameworkId', (done) => {
         chai.request(server)
           .put('/API/FrameworkUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
 							_id: mongoose.Types.ObjectId(),
               FrameworkName: "Updated_InvalidId Framework",
@@ -202,6 +211,7 @@ describe('Frameworks', () => {
 		it('it should not UPDATE an Framework as given id is not a valid objectId', (done) => {
         chai.request(server)
           .put('/API/FrameworkUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id:'abc',
               FrameworkName: "Updated_InvalidId Framework",
@@ -232,6 +242,7 @@ describe('Frameworks', () => {
 	  	framework.save((err, framework) => {
 				chai.request(server)
 			    .delete('/API/FrameworkDelete/' + framework._id)
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .end((err, res) => {
 				  	res.should.have.status(200);
 				  	res.body.should.be.a('object');
@@ -245,6 +256,7 @@ describe('Frameworks', () => {
     it('it should not DELETE an Framework by the given id', (done) => {
         chai.request(server)
           .delete('/API/FrameworkDelete/' + mongoose.Types.ObjectId())
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');

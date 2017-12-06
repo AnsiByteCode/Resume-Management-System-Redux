@@ -6,6 +6,8 @@ let server = require('../server');
 let should = chai.should();
 let expect = chai.expect();
 chai.use(chaiHttp);
+var LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./localstorage');
 
 describe('ProjectRoles', () => {
 
@@ -13,6 +15,7 @@ describe('ProjectRoles', () => {
 	  it('it should GET all the projectroles', (done) => {
 			chai.request(server)
 		    .get('/API/ProjectRoleGetAll')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('array');
@@ -32,6 +35,7 @@ describe('ProjectRoles', () => {
       }
 			chai.request(server)
 		    .post('/API/ProjectRoleInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(projectrole)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -52,6 +56,7 @@ describe('ProjectRoles', () => {
       }
 			chai.request(server)
 		    .post('/API/ProjectRoleInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(projectrole)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -74,6 +79,7 @@ describe('ProjectRoles', () => {
       }
       chai.request(server)
         .post('/API/ProjectRoleInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(projectrole)
         .end((err, res) => {
           res.should.have.status(200);
@@ -97,6 +103,7 @@ describe('ProjectRoles', () => {
 	  	projectrole.save((err, projectrole) => {
 	  		chai.request(server)
         .get('/API/ProjectRoleGetById/' + projectrole._id)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(projectrole)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -111,6 +118,7 @@ describe('ProjectRoles', () => {
     it('it should give an error as the ProjectRoleId is not a valid id', (done) => {
         chai.request(server)
         .get('/API/ProjectRoleGetById/' + 'abc')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .end((err, res) => {
           res.body.should.be.a('object');
           res.body.should.have.property('errors');
@@ -134,6 +142,7 @@ describe('ProjectRoles', () => {
 	  	 projectrole.save((err, projectrole) => {
 				chai.request(server)
 			    .put('/API/ProjectRoleUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .send({
               _id : projectrole._id,
               ProjectRoleName: "Update Test ProjectRole",
@@ -159,6 +168,7 @@ describe('ProjectRoles', () => {
       projectrole.save((err, projectrole) => {
         chai.request(server)
           .put('/API/ProjectRoleUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id : projectrole._id,
               ProjectRoleName: '',
@@ -180,6 +190,7 @@ describe('ProjectRoles', () => {
     it('it should not UPDATE an ProjectRole as given id is not a valid ProjectRoleId', (done) => {
         chai.request(server)
           .put('/API/ProjectRoleUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
 							_id : mongoose.Types.ObjectId(),
               ProjectRoleName: "Updated_InvalidId ProjectRole",
@@ -199,6 +210,7 @@ describe('ProjectRoles', () => {
 		it('it should not UPDATE an ProjectRole as given id is not a valid objectId', (done) => {
         chai.request(server)
           .put('/API/ProjectRoleUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id:'abc',
               ProjectRoleName: "Updated_InvalidId ProjectRole",
@@ -229,6 +241,7 @@ describe('ProjectRoles', () => {
 	  	projectrole.save((err, projectrole) => {
 				chai.request(server)
 			    .delete('/API/ProjectRoleDelete/' + projectrole._id)
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .end((err, res) => {
 				  	res.should.have.status(200);
 				  	res.body.should.be.a('object');
@@ -242,6 +255,7 @@ describe('ProjectRoles', () => {
     it('it should not DELETE an ProjectRole by the given id', (done) => {
         chai.request(server)
           .delete('/API/ProjectRoleDelete/' + mongoose.Types.ObjectId())
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');

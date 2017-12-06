@@ -6,6 +6,8 @@ let server = require('../server');
 let should = chai.should();
 let expect = chai.expect();
 chai.use(chaiHttp);
+var LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./localstorage');
 
 describe('Roles', () => {
 
@@ -13,6 +15,7 @@ describe('Roles', () => {
 	  it('it should GET all the roles', (done) => {
 			chai.request(server)
 		    .get('/API/RoleGetAll')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .end((err, res) => {
 			  	res.should.have.status(200);
 			  	res.body.should.be.a('array');
@@ -32,6 +35,7 @@ describe('Roles', () => {
       }
 			chai.request(server)
 		    .post('/API/RoleInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(role)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -52,6 +56,7 @@ describe('Roles', () => {
       }
 			chai.request(server)
 		    .post('/API/RoleInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(role)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -74,6 +79,7 @@ describe('Roles', () => {
       }
       chai.request(server)
         .post('/API/RoleInsert')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .send(role)
         .end((err, res) => {
           res.should.have.status(200);
@@ -97,6 +103,7 @@ describe('Roles', () => {
 	  	role.save((err, role) => {
 	  		chai.request(server)
         .get('/API/RoleGetById/' + role._id)
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 		    .send(role)
 		    .end((err, res) => {
 			  	res.should.have.status(200);
@@ -111,6 +118,7 @@ describe('Roles', () => {
     it('it should give an error as the RoleId is not a valid id', (done) => {
         chai.request(server)
         .get('/API/RoleGetById/' + 'abc')
+        .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
         .end((err, res) => {
           res.body.should.be.a('object');
           res.body.should.have.property('errors');
@@ -134,6 +142,7 @@ describe('Roles', () => {
 	  	 role.save((err, role) => {
 				chai.request(server)
 			    .put('/API/RoleUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .send({
               _id : role._id,
               RoleName: "Update Test Role",
@@ -159,6 +168,7 @@ describe('Roles', () => {
       role.save((err, role) => {
         chai.request(server)
           .put('/API/RoleUpdate')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id : role._id,
               RoleName: '',
@@ -180,6 +190,7 @@ describe('Roles', () => {
     it('it should not UPDATE an Role as given id is not a valid RoleId', (done) => {
         chai.request(server)
           .put('/API/RoleUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
 							_id: mongoose.Types.ObjectId(),
               RoleName: "Updated_InvalidId Role",
@@ -199,6 +210,7 @@ describe('Roles', () => {
 		it('it should not UPDATE an Role as given id is not a valid objectId', (done) => {
         chai.request(server)
           .put('/API/RoleUpdate/')
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .send({
               _id:'abc',
               RoleName: "Updated_InvalidId Role",
@@ -229,6 +241,7 @@ describe('Roles', () => {
 	  	role.save((err, role) => {
 				chai.request(server)
 			    .delete('/API/RoleDelete/' + role._id)
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
 			    .end((err, res) => {
 				  	res.should.have.status(200);
 				  	res.body.should.be.a('object');
@@ -242,6 +255,7 @@ describe('Roles', () => {
     it('it should not DELETE an Role by the given id', (done) => {
         chai.request(server)
           .delete('/API/RoleDelete/' + mongoose.Types.ObjectId())
+          .set('Authorization', 'Bearer ' + localStorage.getItem('JWT_Token').toString())
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');

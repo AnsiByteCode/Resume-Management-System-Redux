@@ -194,7 +194,7 @@ let projectInsert = (req, res) => {
         OtherTools: req.body.OtherTools,
         DomainId: req.body.DomainId,
         OperatingSystemId: req.body.OperatingSystemId,
-        TechnologyId: req.body.Technology,
+        TechnologyId: req.body.TechnologyId,
         DatabaseId: req.body.DatabaseId,
         IsActive: req.body.IsActive
     });
